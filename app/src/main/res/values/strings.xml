@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BadRoommate</string>
+    <string name="neglected_title_hint">Enter a name for the neglected task.</string>
+    <string name="neglected_title_label">Title</string>
+    <string name="neglected_details_label">Details</string>
+    <string name="neglected_solved_label">Solved</string>
 </resources>
