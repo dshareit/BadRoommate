@@ -3,14 +3,14 @@ package android.bigranch.com;
 import java.util.Date;
 import java.util.UUID;
 
-public class Neglected {
+public class Task {
 
     private UUID mId;
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
 
-    public Neglected() {
+    public Task() {
         mId = UUID.randomUUID();
         mDate = new Date();
     }
