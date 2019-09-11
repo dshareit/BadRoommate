@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -37,8 +38,21 @@ public class TaskListFragment extends Fragment {
     }
 
     private class TaskHolder extends RecyclerView.ViewHolder {
+        private Task mTask;
+        private TextView mTitleTextView;
+        private TextView mDateTextView;
+
         public TaskHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_task, parent, false));
+
+            mTitleTextView = (TextView) itemView.findViewById(R.id.task_title);
+            mDateTextView = (TextView) itemView.findViewById(R.id.task_date);
+        }
+
+        public void bind(Task task) {
+            mTask = task;
+            mTitleTextView.setText(mTask.getTitle());
+            mDateTextView.setText(mTask.getDate().toString());
         }
     }
 
@@ -59,7 +73,8 @@ public class TaskListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
-
+            Task task = mTasks.get(position);
+            holder.bind(task);
         }
 
         @Override
