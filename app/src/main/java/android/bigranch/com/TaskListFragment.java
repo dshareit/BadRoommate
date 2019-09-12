@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -37,13 +38,14 @@ public class TaskListFragment extends Fragment {
         mTaskRecyclerView.setAdapter(mAdapter);
     }
 
-    private class TaskHolder extends RecyclerView.ViewHolder {
+    private class TaskHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private Task mTask;
         private TextView mTitleTextView;
         private TextView mDateTextView;
 
         public TaskHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_task, parent, false));
+            itemView.setOnClickListener(this);
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.task_title);
             mDateTextView = (TextView) itemView.findViewById(R.id.task_date);
@@ -53,6 +55,11 @@ public class TaskListFragment extends Fragment {
             mTask = task;
             mTitleTextView.setText(mTask.getTitle());
             mDateTextView.setText(mTask.getDate().toString());
+        }
+
+        @Override
+        public void onClick(View view) {
+            Toast.makeText(getActivity(), mTask.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
         }
     }
 
