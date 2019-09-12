@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,17 +39,18 @@ public class TaskListFragment extends Fragment {
         mTaskRecyclerView.setAdapter(mAdapter);
     }
 
-    private class TaskHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private Task mTask;
+    private abstract class TaskHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        Task mTask;
         private TextView mTitleTextView;
         private TextView mDateTextView;
 
-        public TaskHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_task, parent, false));
+        public TaskHolder(LayoutInflater inflater, ViewGroup parent, int layout) {
+            super(inflater.inflate(layout, parent, false));
             itemView.setOnClickListener(this);
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.task_title);
             mDateTextView = (TextView) itemView.findViewById(R.id.task_date);
+
         }
 
         public void bind(Task task) {
@@ -60,6 +62,33 @@ public class TaskListFragment extends Fragment {
         @Override
         public void onClick(View view) {
             Toast.makeText(getActivity(), mTask.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class RegularTaskHolder extends TaskHolder {
+        public RegularTaskHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater, parent, R.layout.list_item_task);
+        }
+    }
+
+    private class LandlordTaskHolder extends TaskHolder {
+        private Button mContactLandlordButton;
+
+        public LandlordTaskHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater, parent, R.layout.list_item_task_landlord);
+        }
+
+        @Override
+        public void bind(Task task) {
+            super.bind(task);
+
+                mContactLandlordButton = (Button) itemView.findViewById(R.id.contact_landord_button);
+                mContactLandlordButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "Landlord was contacted for " + mTask.getTitle(), Toast.LENGTH_SHORT).show();
+                    }
+                });
         }
     }
 
@@ -75,7 +104,10 @@ public class TaskListFragment extends Fragment {
         public TaskHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
 
-            return new TaskHolder(layoutInflater, parent);
+            if (viewType == 1) {
+                return new LandlordTaskHolder(layoutInflater, parent);
+            }
+            return new RegularTaskHolder(layoutInflater, parent);
         }
 
         @Override
@@ -87,6 +119,14 @@ public class TaskListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mTasks.size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (mTasks.get(position).isRequiresLandlord()) {
+                return 1;
+            }
+            return 0;
         }
     }
 }

@@ -9,6 +9,7 @@ public class Task {
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
+    private boolean mRequiresLandlord;
 
     public Task() {
         mId = UUID.randomUUID();
@@ -41,6 +42,14 @@ public class Task {
 
     public void setSolved(boolean solved) {
         mSolved = solved;
+    }
+
+    public boolean isRequiresLandlord() {
+        return mRequiresLandlord;
+    }
+
+    public void setRequiresLandlord(boolean requiresLandlord) {
+        mRequiresLandlord = requiresLandlord;
     }
 
 }
