@@ -24,7 +24,6 @@ public class TaskLab {
             Task task = new Task();
             task.setTitle("Task #" + i);
             task.setSolved(i % 2 == 0);
-            task.setRequiresLandlord(i % 3 == 0);
             mTasks.add(task);
         }
     }
