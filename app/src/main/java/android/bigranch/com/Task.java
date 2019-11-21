@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Task {
 
-    private UUID mId;
+    final private UUID mId;
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
@@ -23,16 +23,16 @@ public class Task {
         return mTitle;
     }
 
-    public void setTitle(String title) {
-        mTitle = title;
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
     }
 
     public Date getDate() {
         return mDate;
     }
 
-    public void setDate(Date date) {
-        mDate = date;
+    public void setDate(Date mDate) {
+        this.mDate = mDate;
     }
 
     public boolean isSolved() {

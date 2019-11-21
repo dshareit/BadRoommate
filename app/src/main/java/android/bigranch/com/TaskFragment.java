@@ -11,29 +11,41 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.UUID;
+
 public class TaskFragment extends Fragment {
+
+    private static final String ARG_TASK_ID = "task_id";
 
     private Task mTask;
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mTask = new Task();
+    public static TaskFragment newInstance(UUID taskId) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_TASK_ID, taskId);
+
+        TaskFragment fragment = new TaskFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        UUID taskId = (UUID) getArguments().getSerializable(ARG_TASK_ID);
+        mTask = TaskLab.get(getActivity()).getTask(taskId);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragement_task, container, false);
 
-        mTitleField = (EditText) v.findViewById(R.id.task_title);
+        mTitleField = (EditText)v.findViewById(R.id.task_title);
+        mTitleField.setText(mTask.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -56,6 +68,7 @@ public class TaskFragment extends Fragment {
         mDateButton.setEnabled(false);
 
         mSolvedCheckBox = (CheckBox)v.findViewById(R.id.task_solved);
+        mSolvedCheckBox.setChecked(mTask.isSolved());
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
