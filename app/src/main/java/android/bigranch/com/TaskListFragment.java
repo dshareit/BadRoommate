@@ -74,7 +74,7 @@ public class TaskListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Intent intent = RoommateActivity.newIntent(getActivity(), mTask.getId());
+            Intent intent = TaskPagerActivity.newIntent(getActivity(), mTask.getId());
             startActivity(intent);
         }
     }
