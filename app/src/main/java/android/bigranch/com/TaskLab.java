@@ -9,6 +9,10 @@ import java.util.UUID;
 public class TaskLab {
     private static TaskLab sTaskLab;
 
+    public void addTask(Task t) {
+        mTasks.add(t);
+    }
+
     private List<Task> mTasks;
 
     public static TaskLab get(Context context) {
@@ -20,12 +24,6 @@ public class TaskLab {
 
     private TaskLab(Context context) {
         mTasks = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            Task task = new Task();
-            task.setTitle("Task #" + i);
-            task.setSolved(i % 2 == 0);
-            mTasks.add(task);
-        }
     }
 
     public List<Task> getTasks() {
