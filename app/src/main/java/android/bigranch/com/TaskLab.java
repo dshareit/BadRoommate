@@ -1,6 +1,8 @@
 package android.bigranch.com;
 
+import android.bigranch.com.database.TaskBaseHelper;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,8 @@ public class TaskLab {
     }
 
     private List<Task> mTasks;
+    private Context mContext;
+    private SQLiteDatabase mDatabase;
 
     public static TaskLab get(Context context) {
         if (sTaskLab == null) {
@@ -23,6 +27,8 @@ public class TaskLab {
     }
 
     private TaskLab(Context context) {
+        mContext = context.getApplicationContext();
+        mDatabase = new TaskBaseHelper(mContext).getWritableDatabase();
         mTasks = new ArrayList<>();
     }
 
