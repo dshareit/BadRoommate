@@ -1,5 +1,6 @@
 package android.bigranch.com.database;
 
+import android.bigranch.com.database.TaskDbSchema.TaskTable;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -14,7 +15,13 @@ public class TaskBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL("create table " + TaskTable.NAME +
+                "(" + " _id integer primary key autoincrement, " +
+                TaskTable.Cols.UUID +
+                ", " + TaskTable.Cols.TITLE +
+                ", " + TaskTable.Cols.DATE +
+                ", " + TaskTable.Cols.SOLVED + ")"
+        );
     }
 
     @Override

@@ -11,7 +11,11 @@ public class Task {
     private boolean mSolved;
 
     public Task() {
-        mId = UUID.randomUUID();
+        this(UUID.randomUUID());
+    }
+
+    public Task(UUID id) {
+        mId = id;
         mDate = new Date();
     }
 

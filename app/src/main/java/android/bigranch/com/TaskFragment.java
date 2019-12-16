@@ -47,6 +47,13 @@ public class TaskFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        TaskLab.get(getActivity()).updateTask(mTask);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragement_task, container, false);
 
