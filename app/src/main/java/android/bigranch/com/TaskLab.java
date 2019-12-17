@@ -1,6 +1,7 @@
 package android.bigranch.com;
 
 import android.bigranch.com.database.TaskBaseHelper;
+import android.bigranch.com.database.TaskCursorWrapper;
 import android.bigranch.com.database.TaskDbSchema.TaskTable;
 import android.content.ContentValues;
 import android.content.Context;
@@ -36,11 +37,38 @@ public class TaskLab {
     }
 
     public List<Task> getTasks() {
-        return new ArrayList<>();
+        List<Task> tasks = new ArrayList<>();
+        TaskCursorWrapper cursor = queryTasks(null, null);
+
+        try{
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                tasks.add(cursor.getTask());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return tasks;
     }
 
     public Task getTask(UUID id) {
-        return null;
+        TaskCursorWrapper cursor = queryTasks(
+          TaskTable.Cols.UUID + " = ?",
+          new String[] { id.toString()}
+        );
+
+        try {
+            if (cursor.getCount() == 0) {
+                return null;
+            }
+
+            cursor.moveToFirst();
+            return cursor.getTask();
+        } finally {
+            cursor.close();
+        }
     }
 
     public void updateTask(Task task) {
@@ -50,7 +78,7 @@ public class TaskLab {
         mDatabase.update(TaskTable.NAME, values, TaskTable.Cols.UUID + " = ?", new String[] {uuidString});
     }
 
-    private Cursor queryTasks(String whereClause, String[] whereArgs) {
+    private TaskCursorWrapper queryTasks(String whereClause, String[] whereArgs) {
         Cursor cursor = mDatabase.query(
                 TaskTable.NAME,
                 null,
@@ -60,7 +88,8 @@ public class TaskLab {
                 null,
                 null
         );
-        return cursor;
+
+        return new TaskCursorWrapper(cursor);
     }
 
     private static ContentValues getContentValues(Task task) {
